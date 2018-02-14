@@ -26,6 +26,7 @@ function getBooks(obj:Book, args:any, context:any, info: GraphQLResolveInfo): Pr
 function getBookbyId(obj:Book, args:any, context:any, info: GraphQLResolveInfo): Promise<Book> {
     let authors:string[] = args.authorIds;
     return repository.GetbyId(args.bookId).then(book => {
+        // this is destroying the internal state
         book.author = (book.author as string[]).filter(a => authors != undefined ? authors.includes(a) : true)
         return book
     })

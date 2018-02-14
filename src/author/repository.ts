@@ -2,7 +2,7 @@ import { Author } from "./model"
 //import * as Book from "../book"
 
 // Some fake data
-export const Data = [
+let Data = [
     {
         id: "0",
         books: ["0"],
