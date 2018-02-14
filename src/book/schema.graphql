@@ -1,0 +1,5 @@
+  type Book { 
+    id(id: ID): ID!
+    title: String 
+    author: [Author]
+  }
