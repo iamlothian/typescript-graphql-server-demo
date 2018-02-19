@@ -1,8 +1,7 @@
 import { Book } from "./model"
 //import * as Author from "../author"
 
-// Some fake data
-let Data = [
+let mockData = [
     {
         id: "0",
         title: "Harry Potter and the Sorcerer's stone",
@@ -15,16 +14,21 @@ let Data = [
     },
 ] as Array<Book>;
 
+// Some fake data
+let fetchData = function(): Array<Book>  {
+    return mockData
+}
+
 export async function GetMany() : Promise<Array<Book>> {
     return new Promise<Array<Book>>(resolve => 
-        resolve(Data)
+        resolve(fetchData())
     )
 }
 
 export async function GetManyByAutherId(AutherIds: Array<string>) : Promise<Array<Book>> {
     return new Promise<Array<Book>>(resolve => 
         resolve(
-            Data.filter(
+            fetchData().filter(
                 b => AutherIds.some(
                     a => (b.author as string[]).includes(a)
                 )
@@ -36,7 +40,19 @@ export async function GetManyByAutherId(AutherIds: Array<string>) : Promise<Arra
 export async function GetbyId(id?: string) : Promise<Book> {
     return new Promise<Book>(resolve => 
         resolve(
-            id !== undefined ? Data.filter(b => b.id === id)[0] : undefined
+            id !== undefined ? fetchData().filter(b => b.id === id)[0] : undefined
         )
     )
 } 
+
+export async function addBook(title: string, authorIds: Array<string>) : Promise<Book> {
+    return new Promise<Book>(resolve => {
+        let b = {
+            id: mockData.length.toString(),
+            title: title,
+            author: authorIds != undefined ? authorIds : []
+        }
+        mockData.push(b)
+        resolve(b)
+    })
+}
