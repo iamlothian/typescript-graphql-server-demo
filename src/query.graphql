@@ -1,6 +1,6 @@
 type Query {
   Books: [Book]
-  Book(bookId: ID, authorIds: [ID]): Book
+  Book(bookId: ID): Book
   Author(id: ID): Author 
 }
 

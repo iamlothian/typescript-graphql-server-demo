@@ -24,11 +24,8 @@ function getBooks(obj:Book, args:any, context:any, info: GraphQLResolveInfo): Pr
  * @param info 
  */
 function getBookbyId(obj:Book, args:any, context:any, info: GraphQLResolveInfo): Promise<Book> {
-    let authors:string[] = args.authorIds;
-    return BookRepo.GetbyId(args.bookId).then(book => {
-        book.author = (book.author as string[]).filter(a => authors != undefined ? authors.includes(a) : true)
-        return book
-    })
+    return BookRepo.GetbyId(args.bookId).then(book => book) 
+    //book.author = (book.author as string[]).filter(a => authors != undefined ? authors.includes(a) : true)
 }
 
 /**
@@ -39,7 +36,11 @@ function getBookbyId(obj:Book, args:any, context:any, info: GraphQLResolveInfo):
  * @param info 
  */
 function getAuthersbyId(obj:Book, args:any, context:any, info: GraphQLResolveInfo): Promise<Author.Model>[] {   
-    return (obj.author as Array<string>).map(
+    return (obj.author as Array<string>)
+    .filter(
+        a=>args.ids != undefined ? (args.ids as Array<string>).includes(a) : true
+    )
+    .map(
         a => Author.GetbyId(a).then(d=>d)
     )
 } 
@@ -77,7 +78,7 @@ export const Resolver: IResolvers = {
         Book: getBookbyId 
     } as IResolverObject,
     Book: { // type
-        author: getAuthersbyId // feild
+        author: getAuthersbyId, // feild
     } as IResolverObject,
     Author: { // type
         books: getBooksByAuthor // feild
