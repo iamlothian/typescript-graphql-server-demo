@@ -1,5 +1,5 @@
   type Author { 
     id: ID!
-    title: String 
-    books(ids: [ID!]): [Book] 
+    title: String!
+    books(ids: [ID!]): [Book!] 
   }

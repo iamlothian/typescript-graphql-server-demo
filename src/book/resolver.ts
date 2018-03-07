@@ -24,7 +24,7 @@ function getBooks(obj:Book, args:any, context:any, info: GraphQLResolveInfo): Pr
  * @param info 
  */
 function getBookbyId(obj:Book, args:any, context:any, info: GraphQLResolveInfo): Promise<Book> {
-    return BookRepo.GetbyId(args.bookId).then(book => book) 
+    return BookRepo.GetbyId(args.id).then(book => book) 
     //book.author = (book.author as string[]).filter(a => authors != undefined ? authors.includes(a) : true)
 }
 
@@ -38,7 +38,9 @@ function getBookbyId(obj:Book, args:any, context:any, info: GraphQLResolveInfo):
 function getAuthersbyId(obj:Book, args:any, context:any, info: GraphQLResolveInfo): Promise<Author.Model>[] {   
     return (obj.author as Array<string>)
     .filter(
-        a=>args.ids != undefined ? (args.ids as Array<string>).includes(a) : true
+        a=> args.ids !== undefined && args.ids.length > 0 ? 
+            (args.ids as Array<string>).includes(a) : 
+            true
     )
     .map(
         a => Author.GetbyId(a).then(d=>d)
